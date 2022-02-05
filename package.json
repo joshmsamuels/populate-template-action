@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "lint": "standard"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
     "lodash-es": "^4.17.21"
   },
   "devDependencies": {
-    "jest": "^27.5.0"
+    "jest": "^27.5.0",
+    "standard": "^16.0.4"
   }
 }
