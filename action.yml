@@ -1,15 +1,20 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Template Populator Action'
+description: 'Dynamically populates a template with data'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  data-url:
+    description: 'Data to populate the template with.'
     required: true
-    default: 'World'
+    default: 'resume.json'
+  template-url: 
+    description: 'Template for the data'
+    required: true
+    default: 'template.tex'
 outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  populated-template:
+    description: 'The template with the data filled in'
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.who-to-greet }}
+    - data-url=${{ inputs.data-url }}
+    - template-url=${{ inputs.template-url }}
