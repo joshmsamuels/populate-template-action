@@ -1,0 +1,19 @@
+on: [push]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint Action
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: npm install
+      - run: npm run lint
+  test:
+    runs-on: ubuntu-latest
+    name: Test Action
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      # TODO: Find out if there is a way to cache the node_modules for lint and test actions
+      - run: npm install
+      - run: npm test
