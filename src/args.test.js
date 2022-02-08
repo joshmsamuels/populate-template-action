@@ -34,7 +34,7 @@ describe('ParseArgs with valid data', () => {
 
     const testArgs = [
       ...argv,
-      `data-url=${expectedArgs.dataUrl}`,
+      `data--url=${expectedArgs.dataUrl}`,
     ];
 
     const actual = ParseArgs(testArgs);
