@@ -7,7 +7,7 @@ import {
   test,
 } from '@jest/globals';
 import { argv } from 'process';
-import ParseArgs from './args';
+import ParseArgs from './args.js';
 
 describe('ParseArgs with valid data', () => {
   test('data and template URLs can be pulled out of the args', () => {

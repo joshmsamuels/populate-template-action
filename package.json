@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "This action prints \"Hello World\" to the log or \"Hello\" + the name of a person to greet. To learn how this action was built, see \"[Creating a Docker container action](https://help.github.com/en/articles/creating-a-docker-container-action)\" in the GitHub Help documentation.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "standard"
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",

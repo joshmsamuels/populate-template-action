@@ -1,6 +1,6 @@
 import { argv } from 'process';
 import axios from 'axios';
-import ParseArgs from './src/args';
+import ParseArgs from './src/args.js';
 
 const getFile = async () => {
   const { dataUrl, templateUrl } = ParseArgs(argv);
