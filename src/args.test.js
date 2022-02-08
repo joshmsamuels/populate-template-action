@@ -20,7 +20,7 @@ describe('ParseArgs with valid data', () => {
       ...argv,
       `data-url=${expectedArgs.dataUrl}`,
       `template-url=${expectedArgs.templateUrl}`,
-    ];
+    ]
 
     const actual = ParseArgs(testArgs);
     expect(actual.dataUrl).toBe(expectedArgs.dataUrl);
