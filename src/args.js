@@ -1,4 +1,5 @@
 import { isArray } from 'lodash-es';
+import npmlog from 'npmlog';
 
 const DATA_URL_KEY = 'data-url=';
 const TEMPLATE_URL_KEY = 'template-url=';
@@ -11,7 +12,7 @@ const findArgument = (args, prefix) => args?.find((arg) => arg.startsWith(prefix
 
 const ParseArgs = (argv) => {
   if (!isArray(argv)) {
-    console.error('ParseArgs argv must be an array but was', argv);
+    npmlog.error('ParseArgs argv must be an array but was ', argv);
     throw Error('ParseArgs argv is not an array');
   }
 

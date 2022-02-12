@@ -21,7 +21,8 @@
   "homepage": "https://github.com/joshmsamuels/populate-template-action#readme",
   "dependencies": {
     "axios": "^0.25.0",
-    "lodash-es": "^4.17.21"
+    "lodash-es": "^4.17.21",
+    "npmlog": "^6.0.1"
   },
   "devDependencies": {
     "@jest/globals": "^27.5.0",
