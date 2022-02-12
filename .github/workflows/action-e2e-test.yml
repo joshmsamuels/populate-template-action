@@ -1,0 +1,20 @@
+on: [push]
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    name: A job to test build and deploy for this action
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+      - name: Run Acttion
+        # Uses an action in the root directory
+        uses: ./ 
+      - name: Deploy
+        run: aws s3 cp ./resume.tex s3://joshmsamuels.populate-template-action.test-bucket
