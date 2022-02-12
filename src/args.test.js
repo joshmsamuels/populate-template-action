@@ -6,6 +6,7 @@ import {
   jest,
   test,
 } from '@jest/globals';
+import npmlog from 'npmlog';
 import { argv } from 'process';
 import ParseArgs from './args.js';
 
@@ -91,11 +92,11 @@ describe('ParseArgs with valid data', () => {
 
 describe('ParseArgs with invalid data', () => {
   beforeEach(() => {
-    console.error = jest.fn();
+    npmlog.error = jest.fn();
   });
 
   afterEach(() => {
-    expect(console.error).toHaveBeenCalled();
+    expect(npmlog.error).toHaveBeenCalled();
     jest.clearAllMocks();
   });
 
