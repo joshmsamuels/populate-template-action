@@ -15,17 +15,20 @@ describe('ParseArgs with valid data', () => {
     const expectedArgs = {
       dataUrl: 'www.example.com',
       templateUrl: 'www.example.com',
+      outputFilename: 'output.txt',
     };
 
     const testArgs = [
       ...argv,
       `data-url=${expectedArgs.dataUrl}`,
       `template-url=${expectedArgs.templateUrl}`,
+      `output-filename=${expectedArgs.outputFilename}`,
     ];
 
     const actual = ParseArgs(testArgs);
     expect(actual.dataUrl).toBe(expectedArgs.dataUrl);
     expect(actual.templateUrl).toBe(expectedArgs.templateUrl);
+    expect(actual.outputFilename).toBe(expectedArgs.outputFilename);
   });
 
   test('data URL can be pulled out of the args when template URL is not present', () => {

@@ -9,6 +9,10 @@ inputs:
     description: 'Template for the data'
     required: true
     default: 'template.tex'
+  output-filename: 
+    description: 'Name of the output file'
+    required: true
+    default: 'resume.tex'
 outputs:
   populated-template:
     description: 'The template with the data filled in'
@@ -18,3 +22,4 @@ runs:
   args:
     - data-url=${{ inputs.data-url }}
     - template-url=${{ inputs.template-url }}
+    - output-filename=${{ inputs.output-filename }}
