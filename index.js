@@ -4,29 +4,27 @@ import npmlog from 'npmlog';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import ParseArgs from './src/args.js';
+import PopulateTemplate from './src/templater.js';
 
 const getFile = async () => {
   const { dataUrl, templateUrl, outputFilename } = ParseArgs(argv);
 
-  npmlog.info(`data url: ${dataUrl}`);
-  npmlog.info(`templateUrl: ${templateUrl}`);
-  npmlog.info(`outputFilename: ${outputFilename}`);
-
   try {
-    const res = await axios.get('https://gist.githubusercontent.com/joshmsamuels/951453f0aade3a132f6c8cbd91fd8a52/raw/a1cdc747bb6cf59e0d6d2faa6cf8753d49482a2e/latex-sample.tex');
-    npmlog.info('log', res.data);
+    const template = await (await axios.get(templateUrl)).data;
+    const data = await (await axios.get(dataUrl)).data;
 
-    writeFileSync(
-      join(process.env.GITHUB_WORKSPACE, outputFilename),
-      res.data,
-    );
+    const populatedTemplate = await PopulateTemplate(template, data);
 
-    return res.data;
+    if (process.env.CI === 'true') {
+      // Writing the final file to a local temp file so it can be deployed to S3
+      writeFileSync(
+        join(process.env.GITHUB_WORKSPACE, outputFilename),
+        populatedTemplate,
+      );
+    }
   } catch (err) {
     npmlog.error(err);
   }
-
-  return null;
 };
 
 getFile();
