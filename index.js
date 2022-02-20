@@ -7,13 +7,18 @@ import ParseArgs from './src/args.js';
 import PopulateTemplate from './src/templater.js';
 
 const getFile = async () => {
-  const { dataUrl, templateUrl, outputFilename } = ParseArgs(argv);
+  const {
+    dataUrl,
+    templateUrl,
+    variableTags,
+    outputFilename,
+  } = ParseArgs(argv);
 
   try {
     const template = await (await axios.get(templateUrl)).data;
     const data = await (await axios.get(dataUrl)).data;
 
-    const populatedTemplate = await PopulateTemplate(template, data);
+    const populatedTemplate = await PopulateTemplate(template, data, variableTags);
 
     if (process.env.CI === 'true') {
       // Writing the final file to a local temp file so it can be deployed to S3

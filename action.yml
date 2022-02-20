@@ -9,6 +9,9 @@ inputs:
     description: 'Template for the data'
     required: true
     default: 'template.tex'
+  variable-tags: 
+    description: 'A JSON string representing the start and end tags. See action-e2e-test.yml for an example'
+    required: false
   output-filename: 
     description: 'Name of the output file'
     required: true
@@ -22,4 +25,5 @@ runs:
   args:
     - data-url=${{ inputs.data-url }}
     - template-url=${{ inputs.template-url }}
+    - variable-tags=${{ inputs.variable-tags }}
     - output-filename=${{ inputs.output-filename }}

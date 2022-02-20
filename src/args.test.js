@@ -11,10 +11,11 @@ import { argv } from 'process';
 import ParseArgs from './args.js';
 
 describe('ParseArgs with valid data', () => {
-  test('data and template URLs can be pulled out of the args', () => {
+  test('all data can be pulled out of the args', () => {
     const expectedArgs = {
       dataUrl: 'www.example.com',
       templateUrl: 'www.example.com',
+      variableTags: { start: '<<', end: '>>' },
       outputFilename: 'output.txt',
     };
 
@@ -22,12 +23,14 @@ describe('ParseArgs with valid data', () => {
       ...argv,
       `data-url=${expectedArgs.dataUrl}`,
       `template-url=${expectedArgs.templateUrl}`,
+      `variable-tags=${JSON.stringify(expectedArgs.variableTags)}`,
       `output-filename=${expectedArgs.outputFilename}`,
     ];
 
     const actual = ParseArgs(testArgs);
     expect(actual.dataUrl).toBe(expectedArgs.dataUrl);
     expect(actual.templateUrl).toBe(expectedArgs.templateUrl);
+    expect(actual.variableTags).toMatchObject(expectedArgs.variableTags);
     expect(actual.outputFilename).toBe(expectedArgs.outputFilename);
   });
 
