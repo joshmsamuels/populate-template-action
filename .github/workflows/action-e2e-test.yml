@@ -13,8 +13,11 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
-      - name: Run Acttion
-        # Uses an action in the root directory
+      - name: Run Action
         uses: ./ 
+        with: 
+          template-url: https://gist.githubusercontent.com/joshmsamuels/951453f0aade3a132f6c8cbd91fd8a52/raw/ff265747d0d6840c8af2a0f137bb01d25fbfeef3/populate-template-action-sample-template.tex
+          data-url: https://gist.githubusercontent.com/joshmsamuels/96e1424acbe7e935493456c8d7b41ed1/raw/b80a57f73a4f5816a1b374170972740cccb96d39/populate-template-action-sample-data.json
+          output-filename: sample-file.pdf
       - name: Deploy
-        run: aws s3 cp ./resume.tex s3://joshmsamuels.populate-template-action.test-bucket
+        run: aws s3 cp ./sample-file.pdf s3://joshmsamuels.populate-template-action.test-bucket

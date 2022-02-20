@@ -5,11 +5,9 @@ const DATA_URL_KEY = 'data-url=';
 const TEMPLATE_URL_KEY = 'template-url=';
 const OUTPUT_FILENAME = 'output-filename=';
 
-// Eslint requires us to disable the line length here since one-line fat arrow functions are
-// required when possible (e.g one line function) and it does not permit arbitrary new lines.
-// See: https://github.com/airbnb/javascript/issues/1532 for more details on the conversation
-// eslint-disable-next-line max-len
-const findArgument = (args, prefix) => args?.find((arg) => arg.startsWith(prefix))?.slice(prefix.length);
+const findArgument = (args, prefix) => (
+  args?.find((arg) => arg.startsWith(prefix))?.slice(prefix.length)
+);
 
 const ParseArgs = (argv) => {
   if (!isArray(argv)) {
