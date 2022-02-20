@@ -3,10 +3,11 @@ import npmlog from 'npmlog';
 
 const DATA_URL_KEY = 'data-url=';
 const TEMPLATE_URL_KEY = 'template-url=';
+const VARIABLE_TAGS_KEY = 'variable-tags=';
 const OUTPUT_FILENAME = 'output-filename=';
 
 const findArgument = (args, prefix) => (
-  args?.find((arg) => arg.startsWith(prefix))?.slice(prefix.length)
+  args?.find((arg) => arg.startsWith(prefix))?.slice(prefix.length) ?? null
 );
 
 const ParseArgs = (argv) => {
@@ -22,6 +23,7 @@ const ParseArgs = (argv) => {
   return {
     dataUrl: findArgument(args, DATA_URL_KEY),
     templateUrl: findArgument(args, TEMPLATE_URL_KEY),
+    variableTags: JSON.parse(findArgument(args, VARIABLE_TAGS_KEY)),
     outputFilename: findArgument(args, OUTPUT_FILENAME),
   };
 };
