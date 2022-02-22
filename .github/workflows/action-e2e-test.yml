@@ -19,6 +19,6 @@ jobs:
           template-url: https://gist.githubusercontent.com/joshmsamuels/951453f0aade3a132f6c8cbd91fd8a52/raw/ff265747d0d6840c8af2a0f137bb01d25fbfeef3/populate-template-action-sample-template.tex
           data-url: https://gist.githubusercontent.com/joshmsamuels/96e1424acbe7e935493456c8d7b41ed1/raw/b80a57f73a4f5816a1b374170972740cccb96d39/populate-template-action-sample-data.json
           variable-tags: "{\"start\": \"<<\", \"end\": \">>\"}"
-          output-filename: sample-file.pdf
+          output-filename: sample-file.tex
       - name: Deploy
-        run: aws s3 cp ./sample-file.pdf s3://joshmsamuels.populate-template-action.test-bucket
+        run: aws s3 cp ./sample-file.tex s3://joshmsamuels.populate-template-action.test-bucket
