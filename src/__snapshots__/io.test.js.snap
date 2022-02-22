@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GetFile with a valid URL 1`] = `
+"\\\\documentclass[12pt]{article}
+\\\\usepackage{lingmacros}
+\\\\usepackage{tree-dvips}
+\\\\begin{document}
+
+\\\\section{Testing variable replacement}
+<<messageA>> <<messageB>>
+
+<<messageC>>
+
+\\\\end{document}
+"
+`;

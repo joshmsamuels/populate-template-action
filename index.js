@@ -1,22 +1,24 @@
 import { argv } from 'process';
-import axios from 'axios';
 import npmlog from 'npmlog';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import ParseArgs from './src/args.js';
 import PopulateTemplate from './src/templater.js';
+import GetFile from './src/io.js';
 
-const getFile = async () => {
+const main = async () => {
   const {
     dataUrl,
     templateUrl,
     variableTags,
     outputFilename,
-  } = ParseArgs(argv);
+  } = await ParseArgs(argv);
 
   try {
-    const template = await (await axios.get(templateUrl)).data;
-    const data = await (await axios.get(dataUrl)).data;
+    const [template, data] = await Promise.all([
+      GetFile(templateUrl),
+      GetFile(dataUrl),
+    ]);
 
     const populatedTemplate = await PopulateTemplate(template, data, variableTags);
 
@@ -32,4 +34,4 @@ const getFile = async () => {
   }
 };
 
-getFile();
+main();

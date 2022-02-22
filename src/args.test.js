@@ -11,7 +11,7 @@ import { argv } from 'process';
 import ParseArgs from './args.js';
 
 describe('ParseArgs with valid data', () => {
-  test('all data can be pulled out of the args', () => {
+  test('all data can be pulled out of the args', async () => {
     const expectedArgs = {
       dataUrl: 'www.example.com',
       templateUrl: 'www.example.com',
@@ -27,14 +27,14 @@ describe('ParseArgs with valid data', () => {
       `output-filename=${expectedArgs.outputFilename}`,
     ];
 
-    const actual = ParseArgs(testArgs);
+    const actual = await ParseArgs(testArgs);
     expect(actual.dataUrl).toBe(expectedArgs.dataUrl);
     expect(actual.templateUrl).toBe(expectedArgs.templateUrl);
     expect(actual.variableTags).toMatchObject(expectedArgs.variableTags);
     expect(actual.outputFilename).toBe(expectedArgs.outputFilename);
   });
 
-  test('data URL can be pulled out of the args when template URL is not present', () => {
+  test('data URL can be pulled out of the args when template URL is not present', async () => {
     const expectedArgs = {
       dataUrl: 'www.example.com',
     };
@@ -44,12 +44,12 @@ describe('ParseArgs with valid data', () => {
       `data-url=${expectedArgs.dataUrl}`,
     ];
 
-    const actual = ParseArgs(testArgs);
+    const actual = await ParseArgs(testArgs);
     expect(actual.dataUrl).toBe(expectedArgs.dataUrl);
     expect(actual.templateUrl).toBeFalsy();
   });
 
-  test('template URL can be pulled out of the args when data URL is not present', () => {
+  test('template URL can be pulled out of the args when data URL is not present', async () => {
     const expectedArgs = {
       templateUrl: 'www.example.com',
     };
@@ -59,38 +59,38 @@ describe('ParseArgs with valid data', () => {
       `template-url=${expectedArgs.templateUrl}`,
     ];
 
-    const actual = ParseArgs(testArgs);
+    const actual = await ParseArgs(testArgs);
     expect(actual.dataUrl).toBeFalsy();
     expect(actual.templateUrl).toBe(expectedArgs.templateUrl);
   });
 
-  test('data and template URLs are falsy when not present in the arguments', () => {
+  test('data and template URLs are falsy when not present in the arguments', async () => {
     const testArgs = [
       ...argv,
       'randomArgument',
     ];
 
-    const actual = ParseArgs(testArgs);
+    const actual = await ParseArgs(testArgs);
     expect(actual.dataUrl).toBeFalsy();
     expect(actual.templateUrl).toBeFalsy();
   });
 
-  test('data and template URLs are falsy with one random argument', () => {
+  test('data and template URLs are falsy with one random argument', async () => {
     const testArgs = [
       'randomArgument',
     ];
 
-    const actual = ParseArgs(testArgs);
+    const actual = await ParseArgs(testArgs);
     expect(actual.dataUrl).toBeFalsy();
     expect(actual.templateUrl).toBeFalsy();
   });
 
-  test('data and template URLs are falsy with one random argument', () => {
+  test('data and template URLs are falsy with one random argument', async () => {
     const testArgs = [
       'randomArgument',
     ];
 
-    const actual = ParseArgs(testArgs);
+    const actual = await ParseArgs(testArgs);
     expect(actual.dataUrl).toBeFalsy();
     expect(actual.templateUrl).toBeFalsy();
   });
@@ -106,15 +106,15 @@ describe('ParseArgs with invalid data', () => {
     jest.clearAllMocks();
   });
 
-  test('Throw an error when args are null', () => {
-    expect(() => ParseArgs()).toThrow();
+  test('Throw an error when args are null', async () => {
+    await expect(() => ParseArgs()).rejects.toThrow(Error('ParseArgs argv is not an array'));
   });
 
-  test('Throw an error when args is a number', () => {
-    expect(() => ParseArgs(123)).toThrow();
+  test('Throw an error when args is a number', async () => {
+    await expect(() => ParseArgs(123)).rejects.toThrow(Error('ParseArgs argv is not an array'));
   });
 
-  test('Throw an error when args is an empty object', () => {
-    expect(() => ParseArgs({})).toThrow();
+  test('Throw an error when args is an empty object', async () => {
+    await expect(() => ParseArgs({})).rejects.toThrow(Error('ParseArgs argv is not an array'));
   });
 });
