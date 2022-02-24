@@ -1,10 +1,10 @@
 import { argv } from 'process';
 import npmlog from 'npmlog';
-import { writeFileSync } from 'fs';
 import { join } from 'path';
 import ParseArgs from './src/args.js';
 import PopulateTemplate from './src/templater.js';
 import GetFile from './src/io.js';
+import WriteLatexFile from './src/latex.js';
 
 const main = async () => {
   const {
@@ -22,13 +22,14 @@ const main = async () => {
 
     const populatedTemplate = await PopulateTemplate(template, data, variableTags);
 
+    let fileRoot;
     if (process.env.CI === 'true') {
-      // Writing the final file to a local temp file so it can be deployed to S3
-      writeFileSync(
-        join(process.env.GITHUB_WORKSPACE, outputFilename),
-        populatedTemplate,
-      );
+      fileRoot = process.env.GITHUB_WORKSPACE;
+    } else {
+      fileRoot = '.';
     }
+
+    WriteLatexFile(populatedTemplate, join(fileRoot, outputFilename));
   } catch (err) {
     npmlog.error(err);
   }
