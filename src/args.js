@@ -4,6 +4,8 @@ import npmlog from 'npmlog';
 const DATA_URL_KEY = 'data-url=';
 const TEMPLATE_URL_KEY = 'template-url=';
 const VARIABLE_TAGS_KEY = 'variable-tags=';
+const FONT_ASSET_URLS_KEY = 'font-asset-urls=';
+const OTHER_ASSET_URLS_KEY = 'other-asset-urls=';
 const OUTPUT_FILENAME = 'output-filename=';
 
 const findArgument = async (args, prefix) => (
@@ -26,12 +28,16 @@ const ParseArgs = async (argv) => {
   const findDataUrlPromise = findArgument(args, DATA_URL_KEY);
   const findTemplateUrlPromise = findArgument(args, TEMPLATE_URL_KEY);
   const findVariableTagsPromise = findArgument(args, VARIABLE_TAGS_KEY);
+  const findFontAssetUrlsPromise = findArgument(args, FONT_ASSET_URLS_KEY);
+  const findOtherAssetUrlsPromise = findArgument(args, OTHER_ASSET_URLS_KEY);
   const findOutputFilenamePromise = findArgument(args, OUTPUT_FILENAME);
 
   return {
     dataUrl: await findDataUrlPromise,
     templateUrl: await findTemplateUrlPromise,
     variableTags: JSON.parse(await findVariableTagsPromise),
+    fontAssetUrls: JSON.parse(await findFontAssetUrlsPromise),
+    otherAssetUrls: JSON.parse(await findOtherAssetUrlsPromise),
     outputFilename: await findOutputFilenamePromise,
   };
 };

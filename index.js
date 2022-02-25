@@ -6,11 +6,17 @@ import PopulateTemplate from './src/templater.js';
 import GetFile from './src/io.js';
 import WriteLatexFile from './src/latex.js';
 
+// Directory used when locally running the action so the outputs are less likely
+// to be committed to version control.
+const TESTING_DIR_NAME = 'action_testing_dir';
+
 const main = async () => {
   const {
     dataUrl,
     templateUrl,
     variableTags,
+    fontAssetUrls,
+    otherAssetUrls,
     outputFilename,
   } = await ParseArgs(argv);
 
@@ -26,10 +32,15 @@ const main = async () => {
     if (process.env.CI === 'true') {
       fileRoot = process.env.GITHUB_WORKSPACE;
     } else {
-      fileRoot = '.';
+      fileRoot = join('.', TESTING_DIR_NAME);
     }
 
-    WriteLatexFile(populatedTemplate, join(fileRoot, outputFilename));
+    WriteLatexFile(
+      populatedTemplate,
+      fontAssetUrls,
+      otherAssetUrls,
+      join(fileRoot, outputFilename),
+    );
   } catch (err) {
     npmlog.error(err);
   }

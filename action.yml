@@ -12,6 +12,12 @@ inputs:
   variable-tags: 
     description: 'A JSON string representing the start and end tags. See action-e2e-test.yml for an example'
     required: false
+  font-asset-urls:
+    description: 'A JSON string representing an array of font files to download. See action-e2e-test.yml for an example'
+    required: false
+  other-asset-urls:
+    description: 'A JSON string representing an array of "other" asset files to download, such as cls files. See action-e2e-test.yml for an example'
+    required: false
   output-filename: 
     description: 'Name of the output file'
     required: true
@@ -26,4 +32,6 @@ runs:
     - data-url=${{ inputs.data-url }}
     - template-url=${{ inputs.template-url }}
     - variable-tags=${{ inputs.variable-tags }}
+    - font-asset-urls=${{ inputs.font-assets }}
+    - other-asset-urls=${{ inputs.other-asset-urls }}
     - output-filename=${{ inputs.output-filename }}
