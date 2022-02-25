@@ -32,6 +32,6 @@ runs:
     - data-url=${{ inputs.data-url }}
     - template-url=${{ inputs.template-url }}
     - variable-tags=${{ inputs.variable-tags }}
-    - font-asset-urls=${{ inputs.font-assets }}
+    - font-asset-urls=${{ inputs.font-asset-urls }}
     - other-asset-urls=${{ inputs.other-asset-urls }}
     - output-filename=${{ inputs.output-filename }}
