@@ -61,6 +61,7 @@ const WriteLatexFile = async (latexFile, fontAssetUrls, otherAssetUrls, outputFi
     {
       inputs: resolve(otherAssetsPath),
       fonts: resolve(fontsPath),
+      cmd: 'xetex',
     },
   ).pipe(outputFileStream);
 };
