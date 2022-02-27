@@ -1,69 +1,36 @@
-import {
-  createWriteStream, existsSync, mkdirSync, writeFileSync,
-} from 'fs';
-import { isArray, isString } from 'lodash-es';
-import latex from 'node-latex';
-import npmlog from 'npmlog';
-import { dirname, join, resolve } from 'path';
-import GetFile from './io.js';
+import { spawn } from 'child_process';
+import { createWriteStream } from 'fs';
+import { downloadTempFiles } from './io.js';
 
-export const downloadFilesToDirectory = async (fileUrls, dir) => {
-  // Does not try to download files if the urls are falsy
-  if (!fileUrls) {
-    return;
-  }
+const WriteLatexFile = async (latexFile, outputFile, assets) => {
+  const directory = await downloadTempFiles(assets);
 
-  if (!isArray(fileUrls)) {
-    npmlog.error('fileUrls must be an array but was', fileUrls);
-    throw Error('Parameter fileUrls is invalid');
-  }
+  const outputFileStream = createWriteStream(outputFile);
+  //   latex(
+  //     latexFile,
+  //     {
+  //       inputs: resolve(otherAssetsPath),
+  //       fonts: resolve(fontsPath),
+  //       cmd: 'xelatex',
+  //     },
+  //   ).pipe(outputFileStream);
+  const texProcess = spawn(`xelatex ${la}`);
 
-  if (!fileUrls.every((fileUrl) => isString(fileUrl))) {
-    npmlog.error('All elements of fileUrls must be a string but was', fileUrls);
-    throw Error('One or more URLs are invalid');
-  }
+  texProcess.stdout.on('data', (data) => {
+    console.log(`stdout:\n${data}`);
+  });
 
-  if (!isString(dir)) {
-    npmlog.error('dir must be a string but was', dir);
-    throw Error('Invalid Directory');
-  }
+  texProcess.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+  });
 
-  if (!existsSync(dir)) {
-    mkdirSync(dir, { recursive: true });
-  }
+  texProcess.on('error', (error) => {
+    console.error(`error: ${error.message}`);
+  });
 
-  await Promise.all(fileUrls.map(async (fileUrl) => {
-    let fileContents = await GetFile(fileUrl);
-
-    if (!isString(fileContents)) {
-      // We can only write strings to files
-      fileContents = JSON.stringify(fileContents);
-    }
-
-    const filename = fileUrl.substring(fileUrl.lastIndexOf('/'));
-
-    writeFileSync(join(dir, filename), fileContents);
-  }));
-};
-
-const WriteLatexFile = async (latexFile, fontAssetUrls, otherAssetUrls, outputFilePath) => {
-  const fontsPath = join(dirname(outputFilePath), 'fonts');
-  const otherAssetsPath = join(dirname(outputFilePath), 'otherAssets');
-
-  await Promise.all([
-    downloadFilesToDirectory(fontAssetUrls, fontsPath),
-    downloadFilesToDirectory(otherAssetUrls, otherAssetsPath),
-  ]);
-
-  const outputFileStream = createWriteStream(outputFilePath);
-  latex(
-    latexFile,
-    {
-      inputs: resolve(otherAssetsPath),
-      fonts: resolve(fontsPath),
-      cmd: 'xelatex',
-    },
-  ).pipe(outputFileStream);
+  texProcess.on('close', (code) => {
+    console.log(`child process exited with code ${code}`);
+  });
 };
 
 export default WriteLatexFile;

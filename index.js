@@ -1,14 +1,10 @@
 import { argv } from 'process';
 import npmlog from 'npmlog';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import ParseArgs from './src/args.js';
 import PopulateTemplate from './src/templater.js';
 import GetFile from './src/io.js';
 import WriteLatexFile from './src/latex.js';
-
-// Directory used when locally running the action so the outputs are less likely
-// to be committed to version control.
-const TESTING_DIR_NAME = 'action_testing_dir';
 
 const main = async () => {
   const {
@@ -16,7 +12,8 @@ const main = async () => {
     templateUrl,
     variableTags,
     fontAssetUrls,
-    otherAssetUrls,
+    resumeAssetUrls,
+    topLevelAssetUrls,
     outputFilename,
   } = await ParseArgs(argv);
 
@@ -28,18 +25,22 @@ const main = async () => {
 
     const populatedTemplate = await PopulateTemplate(template, data, variableTags);
 
-    let fileRoot;
+    let persistentDir;
     if (process.env.CI === 'true') {
-      fileRoot = process.env.GITHUB_WORKSPACE;
+      persistentDir = resolve(process.env.GITHUB_WORKSPACE);
     } else {
-      fileRoot = join('.', TESTING_DIR_NAME);
+      persistentDir = resolve('.');
     }
 
     WriteLatexFile(
       populatedTemplate,
-      fontAssetUrls,
-      otherAssetUrls,
-      join(fileRoot, outputFilename),
+      join(persistentDir, outputFilename),
+      [
+        { downloadDir: 'fonts', urls: fontAssetUrls },
+        { downloadDir: 'resume', urls: resumeAssetUrls },
+        { downloadDir: '.', urls: topLevelAssetUrls },
+
+      ],
     );
   } catch (err) {
     npmlog.error(err);
