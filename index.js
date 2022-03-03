@@ -1,4 +1,4 @@
-import { argv } from 'process';
+import { argv, exit } from 'process';
 import npmlog from 'npmlog';
 import { join } from 'path';
 import ParseArgs from './src/args.js';
@@ -22,16 +22,11 @@ const main = async () => {
 
     const populatedTemplate = await PopulateTemplate(template, data, variableTags);
 
-    let fileRoot;
-    if (process.env.CI === 'true') {
-      fileRoot = process.env.GITHUB_WORKSPACE;
-    } else {
-      fileRoot = '.';
-    }
-
-    WriteLatexFile(populatedTemplate, join(fileRoot, outputFilename));
+    const outputLocation = process.env.GITHUB_WORKSPACE ?? '.';
+    WriteLatexFile(populatedTemplate, join(outputLocation, outputFilename));
   } catch (err) {
     npmlog.error(err);
+    exit(1);
   }
 };
 
